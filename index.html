@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="Nexo IDE: laboratorio educativo para escribir, analizar y ejecutar pseudocódigo de forma segura.">
+  <title>Nexo IDE — Laboratorio de pseudocódigo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Íconos vectoriales locales: el proyecto funciona sin internet. -->
+<svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z" fill="currentColor" stroke="currentColor" stroke-linejoin="round"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-3 16"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="m6 9 3 3-3 3m6 0h5"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol>
+  <symbol id="i-brackets" viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3m6-16h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 2.5h7l5 5V20a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4.5a2 2 0 0 1 2-2Z"/><path d="M14 2.5v5h5"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 17v3h16v-3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.5A9 9 0 0 1 8.5 3.5 9 9 0 1 0 20.5 15.5Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5m0 3v.5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 11h7l-1 9 10-12h-7V2Z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 5h13M8 12h13M8 19h13M3 5h.01M3 12h.01M3 19h.01"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M3 7h18M3 17h18M8 4v6m8 4v6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-2-2-6-2-9-1v15c3-1 7-1 9 1 2-2 6-2 9-1V5c-3-1-7-1-9 1Zm0 0v15"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"/></symbol>
+</svg>
+<div class="app-shell" id="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#editor" aria-label="Ir al editor">
+      <span class="logo-mark"><svg class="icon"><use href="#i-code"/></svg></span>
+      <span class="brand-copy"><strong>Nexo<span class="brand-accent">IDE</span></strong><small>ALGORITHM LAB</small></span>
+      <span class="brand-version">v5.0</span>
+    </a>
+    <div class="side-scroll">
+      <div class="nav-heading">EXPLORADOR <span>01</span></div>
+      <button class="side-link selected" data-focus="editor"><svg class="icon"><use href="#i-code"/></svg><span>Editor de código</span><span class="side-key">⌘1</span></button>
+      <button class="side-link" data-view="console"><svg class="icon"><use href="#i-terminal"/></svg><span>Consola</span></button>
+      <button class="side-link" data-view="tokens"><svg class="icon"><use href="#i-layers"/></svg><span>Analizador léxico</span></button>
+      <button class="side-link" data-view="variables"><svg class="icon"><use href="#i-brackets"/></svg><span>Variables</span></button>
+      <button class="side-link" data-view="types"><svg class="icon"><use href="#i-layers"/></svg><span>Tipos de datos</span><span class="side-tag">5</span></button>
+      <button class="side-link" data-view="syntax"><svg class="icon"><use href="#i-book"/></svg><span>Guía de sintaxis</span></button>
+      <div class="side-divider"></div>
+      <div class="nav-heading">ARCHIVOS ABIERTOS <span id="open-file-count">01</span></div>
+      <div class="side-files-actions"><button type="button" id="new-file-side" class="sidebar-new"><span>＋</span> Nuevo archivo</button></div>
+      <div id="opened-files" class="open-file-list" aria-label="Archivos abiertos"></div>
+      <div class="side-divider"></div>
+      <div class="nav-heading">BIBLIOTECA <span>10</span></div>
+      <div class="library-caption">Programas para aprender</div>
+      <button class="example-entry" data-example="welcome"><span class="example-number">01</span><span class="example-info"><strong>Hola, mundo</strong><small>Primer algoritmo</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="math"><span class="example-number">02</span><span class="example-info"><strong>Calculadora</strong><small>Expresiones y operadores</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="input"><span class="example-number">03</span><span class="example-info"><strong>Entrada de datos</strong><small>Leer y Escribir</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="condition"><span class="example-number">04</span><span class="example-info"><strong>Condicionales</strong><small>Si · SiNo · FinSi</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="alltypes"><span class="example-number">05</span><span class="example-info"><strong>Tipos de datos</strong><small>5 tipos en un algoritmo</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="logic"><span class="example-number">06</span><span class="example-info"><strong>Lógica booleana</strong><small>Y, O y No</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="character"><span class="example-number">07</span><span class="example-info"><strong>Caracteres</strong><small>Un carácter y texto</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="for"><span class="example-number">08</span><span class="example-info"><strong>Ciclo Para</strong><small>Contador y paso</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="while"><span class="example-number">09</span><span class="example-info"><strong>Ciclo Mientras</strong><small>Condición de entrada</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+      <button class="example-entry" data-example="repeat"><span class="example-number">10</span><span class="example-info"><strong>Ciclo Repetir</strong><small>Condición de salida</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="engine-card"><span class="engine-light"></span><span><strong>Motor disponible</strong><small>Intérprete local y seguro</small></span><svg class="icon"><use href="#i-check"/></svg></div>
+      <div class="sidebar-foot">AUTÓMATAS Y LENGUAJES FORMALES</div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="top-left"><button id="menu-toggle" class="icon-button menu-toggle" aria-label="Mostrar menú" title="Mostrar menú"><svg class="icon"><use href="#i-list"/></svg></button><span class="breadcrumb-icon"><svg class="icon"><use href="#i-code"/></svg></span><span class="crumb-muted">Espacio de trabajo</span><svg class="icon crumb-arrow"><use href="#i-chevron"/></svg><span class="crumb-current" id="active-file-name">principal.pseudo</span><span class="file-indicator" id="dirty-indicator" title="Cambios guardados localmente"></span></div>
+      <div class="top-right"><span class="autosave"><span class="autosave-dot"></span><span id="save-label">Guardado localmente</span></span><span class="separator"></span><button id="theme" class="icon-button" title="Cambiar apariencia" aria-label="Cambiar apariencia"><svg class="icon theme-icon"><use href="#i-sun"/></svg></button><button id="shortcuts" class="icon-button" title="Atajos de teclado" aria-label="Atajos de teclado"><svg class="icon"><use href="#i-keyboard"/></svg></button><span class="user-avatar">AL</span></div>
+    </header>
+    <div class="work-intro"><div><div class="intro-eyebrow"><span class="eyebrow-line"></span> ESPACIO DE DESARROLLO <span class="intro-id">/ 001</span></div><h1>Laboratorio de algoritmos<span class="title-period">.</span></h1><p>Escribe pseudocódigo, valida su estructura y observa cómo se ejecuta.</p></div><div class="intro-commands"><button id="new-file" class="button button-primary"><svg class="icon"><use href="#i-file"/></svg> Nuevo algoritmo</button><button id="open-file" class="button button-soft"><svg class="icon"><use href="#i-upload"/></svg> Abrir archivo</button><button id="export" class="button button-outline"><svg class="icon"><use href="#i-download"/></svg> Exportar</button></div></div>
+    <div class="workspace">
+      <section class="editor-card" id="editor" aria-label="Editor de pseudocódigo">
+        <div class="editor-header"><div class="editor-file"><span class="tab-file-icon"><svg class="icon"><use href="#i-code"/></svg></span><span id="editor-file-label">principal.pseudo</span><span class="file-dirty" id="file-dirty" hidden></span></div><div class="editor-actions"><span class="editor-language">PSEUDOCÓDIGO</span><button id="copy" class="action-icon" title="Copiar código" aria-label="Copiar código"><svg class="icon"><use href="#i-copy"/></svg></button><button id="reset" class="action-icon" title="Restaurar ejemplo" aria-label="Restaurar ejemplo"><svg class="icon"><use href="#i-settings"/></svg></button></div></div>
+        <div class="file-tabs-row"><div id="file-tabs" class="file-tabs" role="tablist" aria-label="Algoritmos abiertos"></div><button type="button" id="tab-new" class="file-tab-add" title="Nuevo archivo (Ctrl+N)" aria-label="Crear nueva pestaña">+</button></div>
+        <div class="editor-workspace" id="editor-workspace"><div id="highlight-layer" class="highlight-layer" aria-hidden="true"><div id="highlight-lines" class="highlight-lines"></div><pre id="highlight-code" class="highlight-code"></pre></div><div id="lines" class="line-numbers" aria-hidden="true"></div><textarea id="source" aria-label="Escribe aquí el pseudocódigo" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false">Inicio
+Definir edad Como Entero
+Leer edad
+Si edad >= 18 Entonces
+    Escribir "Mayor de edad"
+SiNo
+    Escribir "Menor de edad"
+FinSi
+Fin</textarea></div>
+        <div class="editor-info"><div><span class="ready-dot"></span><span id="cursor-position">Ln 1, Col 1</span><span class="meta-separator">·</span><span id="line-count">9 líneas</span></div><div>UTF-8 <span class="meta-separator">·</span> Pseudocódigo</div></div>
+        <div class="runbar"><button id="run" class="button button-run"><svg class="icon icon-play"><use href="#i-play"/></svg> Ejecutar algoritmo <span class="keycap">Ctrl ↵</span></button><div class="runbar-other"><button id="check" class="button button-secondary"><svg class="icon"><use href="#i-check"/></svg> Validar</button><button id="lex" class="button button-secondary"><svg class="icon"><use href="#i-layers"/></svg> Tokens</button><button id="show-types" class="button button-typeguide" title="Consultar los tipos admitidos"><svg class="icon"><use href="#i-book"/></svg> Tipos de datos</button><button id="show-loops" class="button button-typeguide" title="Consultar ciclos Para, Mientras y Repetir"><svg class="icon"><use href="#i-layers"/></svg> Repetidores</button></div></div>
+      </section>
+
+      <aside class="inspect-card" aria-label="Panel de análisis">
+        <div class="inspect-heading"><div><span class="eyebrow-label">INSPECTOR</span><h2>Análisis del código</h2></div><span class="inspector-indicator" id="analysis-tag">En espera</span></div>
+        <div class="inspect-tabs" role="tablist" aria-label="Panel de análisis"><button class="inspect-tab active" role="tab" data-inspect="overview" aria-selected="true">Resumen</button><button class="inspect-tab" role="tab" data-inspect="tokens" aria-selected="false">Tokens</button><button class="inspect-tab" role="tab" data-inspect="variables" aria-selected="false">Variables</button><button class="inspect-tab" role="tab" data-inspect="types" aria-selected="false">Tipos</button><button class="inspect-tab" role="tab" data-inspect="loops" aria-selected="false">Ciclos</button><button class="inspect-tab" role="tab" data-inspect="syntax" aria-selected="false">Sintaxis</button></div>
+        <div class="inspect-body">
+          <div class="inspect-view active" id="inspect-overview" role="tabpanel"><div class="health-block"><div class="health-icon"><svg class="icon"><use href="#i-check"/></svg></div><div><small>ESTADO DEL ANÁLISIS</small><h3 id="overview-status">Listo para empezar</h3><p id="overview-description">Tu código está preparado para analizarse o ejecutarse.</p></div></div><div class="mini-stats"><div><span class="stat-caption">Líneas</span><strong id="stat-lines">9</strong></div><div><span class="stat-caption">Tokens</span><strong id="stat-tokens">—</strong></div><div><span class="stat-caption">Variables</span><strong id="stat-vars">—</strong></div></div><div class="section-head"><span>FLUJO DE INTERPRETACIÓN</span><span class="small-subtitle">3 etapas</span></div><div class="pipeline"><div class="pipeline-item" id="pipeline-lexer"><span class="pipeline-icon"><svg class="icon"><use href="#i-layers"/></svg></span><span><strong>Analizador léxico</strong><small>Clasificación de tokens</small></span><span class="pipeline-state">Pendiente</span></div><div class="pipeline-item" id="pipeline-parser"><span class="pipeline-icon"><svg class="icon"><use href="#i-brackets"/></svg></span><span><strong>Analizador sintáctico</strong><small>Validación de gramática</small></span><span class="pipeline-state">Pendiente</span></div><div class="pipeline-item" id="pipeline-runtime"><span class="pipeline-icon"><svg class="icon"><use href="#i-bolt"/></svg></span><span><strong>Motor de ejecución</strong><small>Evaluación del algoritmo</small></span><span class="pipeline-state">Pendiente</span></div></div><div class="tip-card"><svg class="icon"><use href="#i-info"/></svg><p><strong>Consejo:</strong> prueba los ejemplos del explorador o usa <kbd>Ctrl</kbd> + <kbd>Enter</kbd> para ejecutar.</p></div></div>
+          <div class="inspect-view" id="inspect-tokens" role="tabpanel"><div class="table-intro"><strong>Tabla de tokens</strong><span id="token-count">0 elementos</span></div><div class="table-viewport"><table><thead><tr><th>#</th><th>Línea</th><th>Clase</th><th>Lexema</th></tr></thead><tbody id="tokens"><tr><td colspan="4" class="empty-cell">Ejecuta el análisis léxico para mostrar tokens.</td></tr></tbody></table></div></div>
+          <div class="inspect-view" id="inspect-variables" role="tabpanel"><div class="table-intro"><strong>Tabla de símbolos</strong><span id="variable-count">0 variables</span></div><div class="table-viewport"><table><thead><tr><th>Nombre</th><th>Tipo</th><th>Valor</th></tr></thead><tbody id="variables"><tr><td colspan="3" class="empty-cell">Las variables aparecerán tras ejecutar.</td></tr></tbody></table></div></div>
+          <div class="inspect-view types-view" id="inspect-types" role="tabpanel">
+            <div class="types-hero"><span class="types-overline">DICCIONARIO DEL LENGUAJE</span><div class="types-hero-head"><h3>Tipos de datos</h3><span class="types-total">05 DISPONIBLES</span></div><p>Declara una variable antes de utilizarla. Puedes cargar un ejemplo de cada tipo directamente en el editor.</p></div>
+            <div class="types-list">
+              <article class="type-tile"><div class="type-icon type-int">01</div><div class="type-content"><div class="type-top"><strong>Entero</strong><span class="type-kind">NÚMERO</span></div><p>Números sin decimales. Ej.: edades, cantidades y contadores.</p><code>Definir edad Como Entero<br>edad = 18</code><button type="button" class="type-load" data-type-example="entero">Probar ejemplo ↗</button></div></article>
+              <article class="type-tile"><div class="type-icon type-dec">02</div><div class="type-content"><div class="type-top"><strong>Decimal</strong><span class="type-kind">NÚMERO</span></div><p>Admite fracciones y operaciones con punto decimal.</p><code>Definir precio Como Decimal<br>precio = 12.75</code><button type="button" class="type-load" data-type-example="decimal">Probar ejemplo ↗</button></div></article>
+              <article class="type-tile"><div class="type-icon type-text">03</div><div class="type-content"><div class="type-top"><strong>Texto</strong><span class="type-kind">CADENA</span></div><p>Frases y nombres escritos entre comillas dobles.</p><code>Definir nombre Como Texto<br>nombre = "Ana"</code><button type="button" class="type-load" data-type-example="texto">Probar ejemplo ↗</button></div></article>
+              <article class="type-tile"><div class="type-icon type-bool">04</div><div class="type-content"><div class="type-top"><strong>Logico</strong><span class="type-kind">BOOLEANO</span></div><p>Solo Verdadero o Falso. Úsalo en condiciones con Y, O y No.</p><code>Definir activo Como Logico<br>activo = Verdadero</code><button type="button" class="type-load" data-type-example="logico">Probar ejemplo ↗</button></div></article>
+              <article class="type-tile"><div class="type-icon type-char">05</div><div class="type-content"><div class="type-top"><strong>Caracter</strong><span class="type-kind">UN SÍMBOLO</span></div><p>Guarda un único carácter entre comillas simples.</p><code>Definir inicial Como Caracter<br>inicial = 'A'</code><button type="button" class="type-load" data-type-example="caracter">Probar ejemplo ↗</button></div></article>
+            </div>
+            <div class="types-hint"><strong>Consejos útiles</strong><p><code>Real</code> es equivalente a <code>Decimal</code> y <code>Booleano</code> a <code>Logico</code>. Puedes declarar varias variables: <code>Definir a, b Como Entero</code>.</p><button type="button" id="try-all-types" class="button button-typeguide">Ejecutar ejemplo con 5 tipos</button></div>
+          </div>
+          <div class="inspect-view loops-view" id="inspect-loops" role="tabpanel">
+            <div class="types-hero"><span class="types-overline">ESTRUCTURAS REPETITIVAS</span><div class="types-hero-head"><h3>Repetidores</h3><span class="types-total">03 CICLOS</span></div><p>Repite instrucciones mediante un contador o una condición. Todos los ciclos tienen límite de ejecución para evitar bloqueos.</p></div>
+            <div class="loop-list">
+              <article class="loop-tile"><div class="loop-label"><span class="loop-number">01</span><strong>Para · FinPara</strong></div><p>Repeticiones controladas por una variable numérica declarada. <code>Paso</code> es opcional; su valor predeterminado es 1.</p><pre>Definir i Como Entero
+Para i = 1 Hasta 5 Hacer
+    Escribir i
+FinPara</pre><button type="button" class="type-load" data-example="for">Abrir en una nueva pestaña ↗</button></article>
+              <article class="loop-tile"><div class="loop-label"><span class="loop-number">02</span><strong>Mientras · FinMientras</strong></div><p>Evalúa la condición antes de cada vuelta. Si inicialmente es falsa, no entra al ciclo.</p><pre>Mientras contador &lt; 3 Hacer
+    Escribir contador
+    contador = contador + 1
+FinMientras</pre><button type="button" class="type-load" data-example="while">Abrir en una nueva pestaña ↗</button></article>
+              <article class="loop-tile"><div class="loop-label"><span class="loop-number">03</span><strong>Repetir · Hasta Que</strong></div><p>Primero ejecuta el cuerpo y después comprueba la condición. Se realiza al menos una vez.</p><pre>Repetir
+    intentos = intentos + 1
+    Escribir intentos
+Hasta Que intentos == 3</pre><button type="button" class="type-load" data-example="repeat">Abrir en una nueva pestaña ↗</button></article>
+            </div><div class="types-hint"><strong>Seguridad</strong><p>El intérprete detiene programas después de 10 000 instrucciones para evitar ciclos infinitos. <code>Paso 0</code> genera un error de ejecución.</p></div>
+          </div>
+          <div class="inspect-view syntax-view" id="inspect-syntax" role="tabpanel"><div class="syntax-intro"><svg class="icon"><use href="#i-book"/></svg><span>REFERENCIA RÁPIDA DEL LENGUAJE</span></div><h3>Estructura básica</h3><pre>Inicio
+  Definir numero Como Entero
+  numero = 10
+  Escribir numero
+Fin</pre><h3>Tipos de datos</h3><p><code>Entero</code> <code>Decimal</code> <code>Texto</code> <code>Logico</code> <code>Caracter</code> (también <code>Real</code> y <code>Booleano</code>)</p><p>Se pueden declarar varias: <code>Definir a, b Como Entero</code>.</p><h3>Entrada y salida</h3><pre>Leer nombre
+Escribir "Hola " + nombre</pre><h3>Operadores</h3><p><code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>==</code> <code>!=</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>Y</code> <code>O</code> <code>No</code></p><h3>Valores literales</h3><pre>activo = Verdadero
+inicial = 'A'
+saludo = "Hola"</pre><h3>Condicional</h3><pre>Si edad &gt;= 18 Entonces
+  Escribir "Mayor"
+SiNo
+  Escribir "Menor"
+FinSi</pre><h3>Repetidores</h3><pre>Para i = 1 Hasta 5 Paso 1 Hacer
+  Escribir i
+FinPara
+
+Mientras i &lt; 10 Hacer
+  i = i + 1
+FinMientras
+
+Repetir
+  i = i - 1
+Hasta Que i == 0</pre><p>Para requiere una variable numérica declarada y los ciclos tienen un límite de seguridad.</p><p>Los comentarios comienzan con <code>#</code>. Cada instrucción ocupa una línea.</p></div>
+        </div>
+      </aside>
+
+      <section class="console-card" id="console-section" aria-label="Consola de resultados"><div class="console-header"><div class="console-title"><svg class="icon"><use href="#i-terminal"/></svg><strong>Terminal de ejecución</strong><span class="console-title-hint">/ salida del programa</span></div><div class="console-actions"><span class="execution-badge" id="execution-badge"><span class="badge-dot"></span> Sin ejecutar</span><button id="clear" class="action-icon" title="Limpiar consola" aria-label="Limpiar consola"><svg class="icon"><use href="#i-x"/></svg></button></div></div><div class="console-content" id="console" aria-live="polite"><div class="console-welcome"><div class="console-art"><svg class="icon"><use href="#i-terminal"/></svg></div><div><strong>Tu entorno está listo.</strong><p>Ejecuta tu algoritmo para ver resultados, advertencias y errores aquí.</p></div></div></div><div class="console-bottom"><span class="console-bottom-left"><span class="ready-dot"></span> <span id="status-message">Sistema listo</span></span><span id="execution-time">Nexo Runtime · JavaScript seguro</span></div></section>
+    </div>
+    <footer class="page-footer"><span>© Nexo IDE · Laboratorio académico</span><span>Sin conexión · Sin dependencias · Sin <code>eval()</code></span></footer>
+  </div>
+</div>
+<input type="file" id="file-input" accept=".pseudo,.psc,.txt,text/plain" multiple hidden>
+<dialog id="input-dialog" class="modal"><form method="dialog" id="input-form"><div class="modal-icon"><svg class="icon"><use href="#i-keyboard"/></svg></div><div class="modal-eyebrow">ENTRADA INTERACTIVA</div><h2>El programa solicita un dato</h2><p id="input-label">Introduce el valor de la variable.</p><label for="input-value">Valor solicitado</label><input id="input-value" spellcheck="false" autocomplete="off"><p id="input-error" class="modal-error" role="alert"></p><div class="dialog-actions"><button type="button" id="input-cancel" class="button button-outline">Cancelar ejecución</button><button type="submit" id="input-ok" value="ok" class="button button-run">Enviar dato <svg class="icon"><use href="#i-chevron"/></svg></button></div></form></dialog>
+<dialog id="help-dialog" class="modal help-modal"><div class="modal-eyebrow">PRODUCTIVIDAD</div><h2>Atajos de teclado</h2><div class="shortcuts-list"><div><span>Ejecutar algoritmo</span><kbd>Ctrl + Enter</kbd></div><div><span>Nueva pestaña</span><kbd>Ctrl + N</kbd></div><div><span>Cambiar pestaña</span><kbd>Ctrl + Tab</kbd></div><div><span>Cerrar pestaña</span><kbd>Ctrl + W</kbd></div><div><span>Renombrar pestaña</span><kbd>Doble clic</kbd></div><div><span>Abrir archivo</span><kbd>Ctrl + O</kbd></div><div><span>Guardar archivo</span><kbd>Ctrl + S</kbd></div><div><span>Ir al editor</span><kbd>Ctrl + 1</kbd></div><div><span>Insertar sangría</span><kbd>Tab</kbd></div></div><button id="help-close" class="button button-run help-close">Entendido</button></dialog>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
