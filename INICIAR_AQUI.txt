@@ -1,0 +1,28 @@
+NEXO IDE 5.0 - INTERPRETE EDUCATIVO DE PSEUDOCODIGO
+==================================================
+
+1. Abra index.html con Google Chrome, Edge o Firefox.
+2. Pulse "Nuevo algoritmo" o el botón + encima del editor para crear pestañas.
+3. Puede abrir varios archivos a la vez con "Abrir archivo".
+4. Los ejemplos se abren en pestañas nuevas; el código anterior se conserva.
+5. En "Repetidores" consulte los ciclos Para, Mientras y Repetir.
+6. En "Tipos" consulte Entero, Decimal, Texto, Logico y Caracter.
+7. Pulse "Ejecutar algoritmo" para correr solo la pestaña actual.
+8. Use "Exportar" (Ctrl+S) para descargar su archivo .pseudo.
+
+ATAJOS: Ctrl+N nuevo archivo | Ctrl+Tab siguiente pestaña |
+Ctrl+Shift+Tab anterior | Ctrl+W cerrar | Ctrl+O importar |
+Ctrl+S exportar | Ctrl+Enter ejecutar | doble clic en pestaña renombrar.
+
+Funciona sin internet, sin instalación ni dependencias externas.
+Los cambios se guardan localmente cuando el navegador lo permite,
+pero conviene exportar copias de los archivos importantes.
+
+PRUEBAS (Node.js opcional):
+  node tests/run-tests.js
+  node tests/run-types-tests.js
+  node tests/run-loops-tests.js
+
+Total verificado: 10 obligatorias + 14 de tipos + 20 de ciclos = 44 pruebas.
+Las 10 comprobaciones de interfaz se encuentran en tests/ui-results.md.
+GitHub: pendiente de publicación desde la cuenta del equipo.
